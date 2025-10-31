@@ -34,17 +34,15 @@
         // Try to open app
         window.location = appUrl;
 
-        // Open store if fails
+        // After a short delay, check if user stayed in browser
         setTimeout(() => {
-          document.removeEventListener(
-            'visibilitychange',
-            handleVisibilityChange
-          );
-          if (!hidden) {
-            //window.location = SIM_LIMITES_URL;
+          const elapsed = Date.now() - start;
+          if (elapsed < 1500) {
             window.location = storeUrl;
+          } else {
+            window.location = SIM_LIMITES_URL;
           }
-        }, 1000);
+        }, 1200);
       }
 
       window.onload = openApp;
