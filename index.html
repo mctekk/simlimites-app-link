@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Open app</title>
+    <script>
+      function openApp() {
+        // === Base config ===
+        const SIM_LIMITES_URL = 'https://simlimites.com';
+        const APP_SCHEME = 'simlimitesapp://';
+        const APP_STORE_URL = 'https://apps.apple.com/app/id6743407020';
+        const PLAY_STORE_URL =
+          'https://play.google.com/store/apps/details?id=com.sim_limites';
+
+        // === Read "route" from URL ===
+        const params = new URLSearchParams(window.location.search);
+        const route = params.get('route') || '';
+        const appUrl = APP_SCHEME + route;
+
+        // Detect OS
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const isAndroid = /android/i.test(ua);
+        const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+        const storeUrl = isAndroid ? PLAY_STORE_URL : APP_STORE_URL;
+
+        let hidden = false;
+
+        // Detect if the page becomes hidden (app switch)
+        const handleVisibilityChange = () => {
+          if (document.hidden) hidden = true;
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        // Try to open app
+        window.location = appUrl;
+
+        // Open store if fails
+        setTimeout(() => {
+          document.removeEventListener(
+            'visibilitychange',
+            handleVisibilityChange
+          );
+          if (!hidden) {
+            //window.location = SIM_LIMITES_URL;
+            window.location = storeUrl;
+          }
+        }, 1000);
+      }
+
+      window.onload = openApp;
+    </script>
+  </head>
+  <body></body>
+</html>
