@@ -32,34 +32,25 @@
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
-        // Try to open app
-        window.location = appUrl;
+        window.location.href = SIM_LIMITES_URL;
+
+        setTimeout(() => {
+          // Try to open app
+          window.location = appUrl;
+        }, 2000);
 
         // Open store if fails
-        if (isAndroid) {
-          setTimeout(() => {
-            document.removeEventListener(
-              'visibilitychange',
-              handleVisibilityChange
-            );
-            if (!hidden) {
-              //window.location = SIM_LIMITES_URL;
-              window.location = storeUrl;
-            }
-          }, 1000);
-        } else {
-          setTimeout(() => {
-            const elapsed = Date.now() - start;
-            document.removeEventListener(
-              'visibilitychange',
-              handleVisibilityChange
-            );
-            if (!hidden && elapsed < 500) {
-              //window.location = SIM_LIMITES_URL;
-              window.location = storeUrl;
-            }
-          }, 100);
-        }
+        // setTimeout(() => {
+        //   const elapsed = Date.now() - start;
+        //   document.removeEventListener(
+        //     'visibilitychange',
+        //     handleVisibilityChange
+        //   );
+        //   if (!hidden && elapsed < 1500) {
+        //     //window.location = SIM_LIMITES_URL;
+        //     window.location = storeUrl;
+        //   }
+        // }, 1000);
       }
 
       window.onload = openApp;
