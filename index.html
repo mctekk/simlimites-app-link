@@ -23,6 +23,7 @@
         const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
         const storeUrl = isAndroid ? PLAY_STORE_URL : APP_STORE_URL;
 
+        const start = Date.now();
         let hidden = false;
 
         // Detect if the page becomes hidden (app switch)
@@ -31,20 +32,34 @@
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
-        const start = Date.now();
-
         // Try to open app
         window.location = appUrl;
 
-        // After a short delay, check if user stayed
-        setTimeout(() => {
-          const elapsed = Date.now() - start;
-          if (elapsed < 1500) {
-            window.location = storeUrl;
-          } else {
-            window.location = SIM_LIMITES_URL;
-          }
-        }, 1200);
+        // Open store if fails
+        if (isAndroid) {
+          setTimeout(() => {
+            document.removeEventListener(
+              'visibilitychange',
+              handleVisibilityChange
+            );
+            if (!hidden) {
+              //window.location = SIM_LIMITES_URL;
+              window.location = storeUrl;
+            }
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            const elapsed = Date.now() - start;
+            document.removeEventListener(
+              'visibilitychange',
+              handleVisibilityChange
+            );
+            if (!hidden && elapsed < 500) {
+              //window.location = SIM_LIMITES_URL;
+              window.location = storeUrl;
+            }
+          }, 100);
+        }
       }
 
       window.onload = openApp;
