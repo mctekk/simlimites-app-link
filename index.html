@@ -32,25 +32,27 @@
         };
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
-        window.location.href = SIM_LIMITES_URL;
+        //window.location.href = SIM_LIMITES_URL;
 
-        setTimeout(() => {
-          // Try to open app
-          window.location = appUrl;
-        }, 2000);
+        // setTimeout(() => {
+        //   // Try to open app
+        //   window.location = appUrl;
+        // }, 2000);
+
+        // Try to open app
+        window.location = appUrl;
 
         // Open store if fails
-        // setTimeout(() => {
-        //   const elapsed = Date.now() - start;
-        //   document.removeEventListener(
-        //     'visibilitychange',
-        //     handleVisibilityChange
-        //   );
-        //   if (!hidden && elapsed < 1500) {
-        //     //window.location = SIM_LIMITES_URL;
-        //     window.location = storeUrl;
-        //   }
-        // }, 1000);
+        setTimeout(() => {
+          document.removeEventListener(
+            'visibilitychange',
+            handleVisibilityChange
+          );
+          if (!hidden) {
+            window.location.href = SIM_LIMITES_URL;
+            //window.location = storeUrl;
+          }
+        }, 1000);
       }
 
       window.onload = openApp;
